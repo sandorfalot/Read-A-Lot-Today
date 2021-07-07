@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Read A Lot Today</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+  img{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+      height: auto;
+      box-shadow: 2px 2px 7px 3px rgba(0,0,0, 0.25);
+      border-radius: 5px;
+  }
+      .header{
+          background: hsla(332, 53%, 82%, 1);
+
+         background: linear-gradient(135deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%);
+
+          background: -moz-linear-gradient(135deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%);
+
+          background: -webkit-linear-gradient(135deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#e9b7ce", endColorstr="#d3f3f1", GradientType=1 );
+      width: 100%;
+      min-height: 30vh;
+        padding: 7%;  
+        box-shadow: 0px 0px 8px 7px rgba(0,0,0, 0.15);
+      }
+      html, body{
+          overflow-x: hidden;
+      }
+  </style>
+</head>
+<body>
+
+
+<div class="header text-center justify-content-center">
+  <h1 class="display-4">Read A Lot Today</h1>
+  <p><em>Get the best learning objects from thousand of sources: YouTube, Books, Podcasts, MOOC and more!
+</em>
+</p> 
+<div class="row m-3">&nbsp;</div>
+<p> <form>
+  <div class="form-group">
+    <input type="text" class="form-control shadow" placeholder="Enter search words" id="keywords">
+     
+  </div>
+
+<div class="form-group">
+ 
+  <select class="form-control shadow" id="sel111" name="sel1">
+      <option name="sel11" id="sel11"  value="10">Format</option>
+    <option name="app" value="app" id="app">App</option>
+    <option name="article" value="article" id="article">Article</option>
+    <option name="book" value="book" id="book">Book</option>
+    <option name="career profile" value="career profile" id="career profile">Career Profile</option>
+        <option name="distance learning" value="distance learning" id="distance learning">Distance Learning</option>
+            <option name="ebook" value="ebook" id="ebook">eBook</option>
+                <option name="mooc" value="mooc" id="mooc">mooc</option>
+                    <option name="podcast" value="podcast" id="podcast">Podcast</option>
+                        <option name="safety sheet" value="safety sheet" id="safety sheet">Safety Sheet</option>
+    <option name="serious game" value="serious game" id="serious game">Serious Game</option>
+        <option name="training" value="training" id="training">Training</option>
+            <option name="tutorial" value="tutorial" id="tutorial">Tutorial</option>
+                <option name="video" value="video" id="video">Video</option>
+                    <option name="website" value="website" id="website">Website</option>
+
+ </select>
+</div>
+    <button class="btn btn-info btn-block shadow" id="getFeed" type="submit">Search</button>
+  </form></p>
+ 
+</div>
+<div class="container">
+    <div class="row p-2">
+  
+ <script>
+  $(document).ready(function () {
+$("button").click(function (e) {
+    e.preventDefault();
+
+   var id = $(this).data("id");
+        var keywords = $('#keywords').val();
+      
+        var typeo = $('#sel111').find(":selected").text();
+       
+       var mainUrl = 'https://learning-objects-v2.p.rapidapi.com/search?keywords=' + keywords + '&lang=en&type=' + typeo + '&sort=popularity&model=strict&max=12&page=0'
+       
+$.ajax({
+    async: true,
+        	crossDomain: true,
+	        url: mainUrl,
+	         method: "GET",
+	          contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc,
+	        headers: {
+		    "x-rapidapi-key": "abcdefghijklmnopqrstuvwxyz1234567890",
+		    "x-rapidapi-host": "learning-objects-v2.p.rapidapi.com"
+	        },       
+    });        
+
+function successFunc(data, status) {
+        var items = [];
+    //  alert(mainUrl);
+
+    $.each(data.response.content, function(i, item) { 
+      $("#title").append("<div class='card m-4 shadow'><div class='card-header'><h4><a href=" + item.url + ">" + item.title + "</h4></a></div><div class='card-body row p-3'><div class='col-sm-3 justify-co'><img src=" + item.picture + "></div><div class='col-sm-9'><p>" + item.description + "</p></div></div><div class='card-footer'><b>Provider: </b>" + item.provider + " / <b>Level:</b> "+ item.level + " / <b>Learning Time:</b>: "+ item.learningTimeValue + item.learningTimeUnit + "</div></div> ");
+    });
+
+  
+    }
+
+function errorFunc() {
+        alert('error');
+    }
+});
+});
+
+	
+</script>
+	
+<!-- container -->
+<div class="container m-2" id="title">
+  
+</div>
+
+</div><!-- row -->
+<div class="row m-2">&nbsp;</div><!-- break -->
+<!-- footer -->
+<div class="row bg-light p-3">
+    <div class="col-sm-4 p-3">This project uses the <a href="https://rapidapi.com/inokufu-search-api/api/learning-objects-v2/">Learning Objects</a> free API on <a href="http://www.rapidapi.com">RapidAPI</a>.</div>
+        <div class="col-sm-4 p-3">This project is <a href="http://www.github.com/sandorfalot">open source on GitHub</a> and hosted on <a href="http://interserver.net">Interserver</a></div>
+            <div class="col-sm-4 p-3">What was uses to make this?
+            <ul><li>Bootstrap</li>
+            <li>jQuery</li>
+            </ul></div>
+</div>
+</body>
+</html>
